@@ -3,3 +3,59 @@
     margin: 0;
     box-sizing: border-box;
 }
+
+html,
+body{
+    height: 100%;
+    width: 100%;
+    padding: 20px 30px;
+}
+
+.container{
+    margin: 0 auto;
+    background: black;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 10px 6px -6px #777;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calc{
+    border: 4px solid white;
+    height: 380px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.display {
+    flex-grow: 3;
+}
+
+.keypad {
+    flex-grow: 4;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-columns:  1fr 1fr 1fr 1fr 1fr;
+}
+
+#equals {
+    grid-row-start: 3;
+    grid-row-end: 5;
+}
+
+.btn {
+    padding: 20px;
+    border: none;
+    background: white;
+    font-size: 16px;
+    text-align: center;
+    color:black;
+}
+
+.btn:hover {
+    color: white;
+    background: rgba(88, 88, 88, 0.6)
+}
