@@ -35,13 +35,16 @@ body{
 }
 
 .keypad {
-    flex-grow: 4;
+    width: 100%;
+    bottom: 0;
     display: grid;
     grid-template-rows: 1fr 1fr 1fr 1fr;
     grid-template-columns:  1fr 1fr 1fr 1fr 1fr;
 }
 
 #equals {
+    grid-column-start: 5;
+    grid-column-end: 6;
     grid-row-start: 3;
     grid-row-end: 5;
 }
