@@ -1,6 +1,7 @@
 const currentDisplay = document.getElementById("current"),
     mainDisplay = document.getElementById("main");
 
+//to disable operator keys if pressed once
 let isOperatorEnabled = false;
 
 attachHandlerToButtons();
@@ -16,7 +17,7 @@ function handleNumberEvent(numberEvent) {
 
     updateCurrentDisplay(numberEvent.srcElement.textContent);
 
-    if (isOperatorEnabled = false == true) {
+    if (isOperatorEnabled == true) {
         isOperatorEnabled = false;
     }
 }
