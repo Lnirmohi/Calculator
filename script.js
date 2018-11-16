@@ -7,7 +7,7 @@ let isOperatorEnabled = false;
 attachHandlerToButtons();
 
 function attachHandlerToButtons() {
-    
+
     [...document.getElementsByClassName("num-button")].forEach(btn => btn.addEventListener("click", handleNumberEvent));
     [...document.getElementsByClassName("op-button")].forEach(btn => btn.addEventListener("click", handleOperatorEvent));
     [...document.getElementsByClassName("edit-button")].forEach(btn => btn.addEventListener("click", handleEditEvent));
@@ -24,7 +24,12 @@ function handleNumberEvent(numberEvent) {
 
 function handleOperatorEvent(operatorEvent) {
 
-    if (operatorEvent.srcElement.id == "equals" && isOperatorEnabled == false) {
+    if(/[a-zA-Z]/g.test(currentDisplay.textContent)) {
+
+        console.log("err");
+
+        currentDisplay.textContent = mainDisplay.textContent = "";
+    } else if (operatorEvent.srcElement.id == "equals" && isOperatorEnabled == false) {
 
         mainDisplay.textContent += currentDisplay.textContent;
 
@@ -45,14 +50,20 @@ function handleEditEvent(editEvent) {
 
     if (editEvent.srcElement.id == "clear") {
 
-        currentDisplay.textContent = mainDisplay.textContent = "";
+        currentDisplay.textContent = mainDisplay.textContent = "";      
     } else if (editEvent.srcElement.id == "delete") {
 
-        currentDisplay.textContent = currentDisplay.textContent.slice(0, -1);
+        if(/[a-zA-Z]/g.test(currentDisplay.textContent)) {
 
-        isOperatorEnabled = true;
+            currentDisplay.textContent = mainDisplay.textContent = "";
+        }else {
 
-        updateCurrentDisplay(currentDisplay.textContent);
+            currentDisplay.textContent = currentDisplay.textContent.slice(0, -1);
+
+            isOperatorEnabled = true;
+
+            updateCurrentDisplay(currentDisplay.textContent);
+        }   
     }
 }
 
@@ -70,7 +81,7 @@ function updateCurrentDisplay(currentValue) {
 
 function updateMainDisplay(currentValue, operator) {
 
-    if (isOperatorEnabled == false) {
+    if (isOperatorEnabled == false || (mainDisplay.textContent == "" && operator !== "=")) {
 
         mainDisplay.textContent += `${currentValue}${operator}`;
     }
@@ -101,6 +112,11 @@ function arithmetic([a, b], operator) {
 //solves them by order of precedence of operators
 function evaluateExp(expString) {
 
+    if (checkForDivisionByZero(expString)) {
+        
+        return "Cannot divide by Zero";
+    }
+
     let regexForOperation;
 
     expString = simplifyEquation(expString);
@@ -119,7 +135,21 @@ function evaluateExp(expString) {
         expString = evaluateSingleExp(regexForOperation, expString);
     }
 
+    if (expString === "Cannot divide by zero") {
+
+        return expString;
+    }
+
     return parseFloat(expString);
+}
+
+function checkForDivisionByZero(exp) {
+
+    if (exp.endsWith("/0") || /\/0[\+\-\*\/]/.test(exp)) {
+        return true;
+    }
+
+    return false;
 }
 
 //It simplifies equation by equating plus/minus signs
