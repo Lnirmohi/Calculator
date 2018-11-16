@@ -15,6 +15,10 @@ function attachHandlerToButtons() {
 
 function handleNumberEvent(numberEvent) {
 
+    /* if(numberEvent.srcElement.textContent == ".") {
+
+    } */
+
     updateCurrentDisplay(numberEvent.srcElement.textContent);
 
     if (isOperatorEnabled == true) {
@@ -25,8 +29,6 @@ function handleNumberEvent(numberEvent) {
 function handleOperatorEvent(operatorEvent) {
 
     if(/[a-zA-Z]/g.test(currentDisplay.textContent)) {
-
-        console.log("err");
 
         currentDisplay.textContent = mainDisplay.textContent = "";
     } else if (operatorEvent.srcElement.id == "equals" && isOperatorEnabled == false) {
@@ -76,13 +78,26 @@ function updateCurrentDisplay(currentValue) {
         isOperatorEnabled = false;
     }
 
-    currentDisplay.textContent += currentValue;
+    if(currentValue == "."){
+
+        if(currentDisplay.textContent.includes(".") == false && currentDisplay.textContent.length !== 0){
+            
+            currentDisplay.textContent += currentValue;
+        }        
+    }else {
+        currentDisplay.textContent += currentValue;
+    }
+    
 }
 
 function updateMainDisplay(currentValue, operator) {
 
     if (isOperatorEnabled == false || (mainDisplay.textContent == "" && operator !== "=")) {
 
+        if(currentValue.endsWith(".")){
+            currentValue = currentValue.slice(0, currentValue.length-1);
+        }
+        
         mainDisplay.textContent += `${currentValue}${operator}`;
     }
 }
@@ -133,11 +148,6 @@ function evaluateExp(expString) {
         regexForOperation = new RegExp("\\+|\\-", "g");
 
         expString = evaluateSingleExp(regexForOperation, expString);
-    }
-
-    if (expString === "Cannot divide by zero") {
-
-        return expString;
     }
 
     return parseFloat(expString);
