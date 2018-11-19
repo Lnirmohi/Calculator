@@ -2,36 +2,66 @@ const currentDisplay = document.getElementById("current"),
     mainDisplay = document.getElementById("main");
 
 //to disable operator keys if pressed once
-let isOperatorEnabled = false;
+var isOperatorEnabled = false,
+    history = {
+        equation: "",
+        answer: ""
+    };
 
 attachHandlerToButtons();
 
 function attachHandlerToButtons() {
+
+    window.addEventListener("keydown", handleNumPadEvent);
 
     [...document.getElementsByClassName("num-button")].forEach(btn => btn.addEventListener("click", handleNumberEvent));
     [...document.getElementsByClassName("op-button")].forEach(btn => btn.addEventListener("click", handleOperatorEvent));
     [...document.getElementsByClassName("edit-button")].forEach(btn => btn.addEventListener("click", handleEditEvent));
 }
 
-function handleNumberEvent(numberEvent) {
+function handleNumPadEvent(numPadEvent) {
 
-    /* if(numberEvent.srcElement.textContent == ".") {
+    console.log(numPadEvent);
 
-    } */
+    if (/[0-9|\.]/g.test(numPadEvent.key)) {
 
-    updateCurrentDisplay(numberEvent.srcElement.textContent);
+        updateCurrentDisplay(numPadEvent.key);
+    } else if (/[\+\-|*\=]/g.test(numPadEvent.key) || numPadEvent.key == "Enter") {
 
-    if (isOperatorEnabled == true) {
-        isOperatorEnabled = false;
+        operationalUpdate(numPadEvent.key);
+    } else if (numPadEvent.key == "Backspace") {
+
+        deletionUpdate();
     }
 }
 
+function handleNumberEvent(numberEvent) {
+
+    updateCurrentDisplay(numberEvent.srcElement.textContent);
+}
+
+function numericUpdate(value) {
+
+    if (currentDisplay.textContent.length <= 22) {
+
+        updateCurrentDisplay(value);
+    }
+}
+
+//this function handles operator events like +, -, *, /, =
 function handleOperatorEvent(operatorEvent) {
 
-    if(/[a-zA-Z]/g.test(currentDisplay.textContent)) {
+    //to clear the screen if a division by zero has taken place and current display
+    //shows "Cannot divide by zero".
+    operationalUpdate(operatorEvent.srcElement.textContent);
+}
 
-        currentDisplay.textContent = mainDisplay.textContent = "";
-    } else if (operatorEvent.srcElement.id == "equals" && isOperatorEnabled == false) {
+function operationalUpdate(operator) {
+
+    if (/[a-zA-Z]/g.test(currentDisplay.textContent)) {
+
+        resetBothDisplay();
+    } else if ((operator == "=" || operator == "Enter") && isOperatorEnabled == false) {
 
         mainDisplay.textContent += currentDisplay.textContent;
 
@@ -42,7 +72,7 @@ function handleOperatorEvent(operatorEvent) {
         isOperatorEnabled = true;
     } else if (currentDisplay.textContent.length !== 0) {
 
-        updateMainDisplay(currentDisplay.textContent, operatorEvent.srcElement.textContent);
+        updateMainDisplay(currentDisplay.textContent, operator);
 
         isOperatorEnabled = true;
     }
@@ -52,20 +82,27 @@ function handleEditEvent(editEvent) {
 
     if (editEvent.srcElement.id == "clear") {
 
-        currentDisplay.textContent = mainDisplay.textContent = "";      
+        resetBothDisplay();
     } else if (editEvent.srcElement.id == "delete") {
 
-        if(/[a-zA-Z]/g.test(currentDisplay.textContent)) {
+        //to clear the screen if a division by zero has taken place and current display
+        //shows "Cannot divide by zero".
+        deletionUpdate();
+    }
+}
 
-            currentDisplay.textContent = mainDisplay.textContent = "";
-        }else {
+function deletionUpdate() {
 
-            currentDisplay.textContent = currentDisplay.textContent.slice(0, -1);
+    if (/[a-zA-Z]/g.test(currentDisplay.textContent)) {
 
-            isOperatorEnabled = true;
+        resetBothDisplay();
+    } else {
 
-            updateCurrentDisplay(currentDisplay.textContent);
-        }   
+        currentDisplay.textContent = currentDisplay.textContent.slice(0, -1);
+
+        isOperatorEnabled = true;
+
+        updateCurrentDisplay(currentDisplay.textContent);
     }
 }
 
@@ -78,28 +115,36 @@ function updateCurrentDisplay(currentValue) {
         isOperatorEnabled = false;
     }
 
-    if(currentValue == "."){
+    if (currentValue == ".") {
 
-        if(currentDisplay.textContent.includes(".") == false && currentDisplay.textContent.length !== 0){
-            
+        if (currentDisplay.textContent.includes(".") == false && currentDisplay.textContent.length !== 0) {
+
             currentDisplay.textContent += currentValue;
-        }        
-    }else {
+        }
+    } else {
+
         currentDisplay.textContent += currentValue;
     }
-    
+
 }
 
 function updateMainDisplay(currentValue, operator) {
 
     if (isOperatorEnabled == false || (mainDisplay.textContent == "" && operator !== "=")) {
 
-        if(currentValue.endsWith(".")){
-            currentValue = currentValue.slice(0, currentValue.length-1);
+        //if decimal is pressed and no number is followed by it then decimal is sliced out
+        if (currentValue.endsWith(".")) {
+
+            currentValue = currentValue.slice(0, currentValue.length - 1);
         }
-        
+
         mainDisplay.textContent += `${currentValue}${operator}`;
     }
+}
+
+function resetBothDisplay() {
+
+    currentDisplay.textContent = mainDisplay.textContent = "";
 }
 
 function arithmetic([a, b], operator) {
@@ -128,7 +173,7 @@ function arithmetic([a, b], operator) {
 function evaluateExp(expString) {
 
     if (checkForDivisionByZero(expString)) {
-        
+
         return "Cannot divide by Zero";
     }
 
@@ -156,6 +201,7 @@ function evaluateExp(expString) {
 function checkForDivisionByZero(exp) {
 
     if (exp.endsWith("/0") || /\/0[\+\-\*\/]/.test(exp)) {
+
         return true;
     }
 
@@ -206,7 +252,7 @@ function evaluateSingleExp(regex, expression) {
     return expression;
 }
 
-//It splits the digits by removing operator and returns an array
+//it splits the digits by removing operator and returns an array
 function getDigitsFromEqn(expression, operator) {
 
     return expression.split(`${operator}`)
