@@ -3,7 +3,7 @@ const currentDisplay = document.getElementById("current"),
 
 //to disable operator keys if pressed once
 var isOperatorEnabled = false,
-    history = [];
+    previousCalculations = [];
 
 attachHandlerToButtons();
 
@@ -63,14 +63,14 @@ function numericUpdate(value) {
 
 //this function handles operator events like +, -, *, /, =
 function handleOperatorEvent(operatorEvent) {
-
-    //to clear the screen if a division by zero has taken place and current display
-    //shows "Cannot divide by zero".
+    
     operationalUpdate(operatorEvent.srcElement.textContent);
 }
 
 function operationalUpdate(operator) {
 
+    //to clear the screen if a division by zero has taken place and current display
+    //shows "Cannot divide by zero".
     if (/[a-zA-Z]/g.test(currentDisplay.textContent)) {
 
         resetBothDisplay();
@@ -86,7 +86,7 @@ function operationalUpdate(operator) {
 
         isOperatorEnabled = true;
 
-        console.log(history);
+        console.log(previousCalculations);
     } else if (currentDisplay.textContent.length !== 0) {
 
         updateMainDisplay(currentDisplay.textContent, operator);
@@ -283,7 +283,7 @@ function getDigitsFromEqn(expression, operator) {
 
 function updateHistory(equation, answer) {
 
-    history.unshift({
+    previousCalculations.unshift({
         eqn : equation,
         sol : answer
     });
