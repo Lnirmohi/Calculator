@@ -3,10 +3,7 @@ const currentDisplay = document.getElementById("current"),
 
 //to disable operator keys if pressed once
 var isOperatorEnabled = false,
-    history = {
-        equation: "",
-        answer: ""
-    };
+    history = [];
 
 attachHandlerToButtons();
 
@@ -14,19 +11,35 @@ function attachHandlerToButtons() {
 
     window.addEventListener("keydown", handleNumPadEvent);
 
+    document.getElementById("negate").addEventListener("click", handleNegation);
     [...document.getElementsByClassName("num-button")].forEach(btn => btn.addEventListener("click", handleNumberEvent));
     [...document.getElementsByClassName("op-button")].forEach(btn => btn.addEventListener("click", handleOperatorEvent));
     [...document.getElementsByClassName("edit-button")].forEach(btn => btn.addEventListener("click", handleEditEvent));
+    
+}
+
+function handleNegation() {
+
+    let currentEqnLength = currentDisplay.textContent.length;
+
+    if(currentEqnLength > 0) {
+
+        if (!currentDisplay.textContent.startsWith("-")) {
+
+            currentDisplay.textContent = "-".concat(currentDisplay.textContent);
+        }else if(currentDisplay.textContent.startsWith("-")) {
+    
+            currentDisplay.textContent = currentDisplay.textContent.slice(1, currentEqnLength);
+        }
+    }
 }
 
 function handleNumPadEvent(numPadEvent) {
 
-    console.log(numPadEvent);
-
     if (/[0-9|\.]/g.test(numPadEvent.key)) {
 
-        updateCurrentDisplay(numPadEvent.key);
-    } else if (/[\+\-|*\=]/g.test(numPadEvent.key) || numPadEvent.key == "Enter") {
+        numericUpdate(numPadEvent.key);
+    } else if ((/[\+\-\*\/\=]/.test(numPadEvent.key)) || numPadEvent.key == "Enter") {
 
         operationalUpdate(numPadEvent.key);
     } else if (numPadEvent.key == "Backspace") {
@@ -37,7 +50,7 @@ function handleNumPadEvent(numPadEvent) {
 
 function handleNumberEvent(numberEvent) {
 
-    updateCurrentDisplay(numberEvent.srcElement.textContent);
+    numericUpdate(numberEvent.srcElement.textContent);
 }
 
 function numericUpdate(value) {
@@ -67,9 +80,13 @@ function operationalUpdate(operator) {
 
         currentDisplay.textContent = evaluateExp(mainDisplay.textContent).toString();
 
+        updateHistory(mainDisplay.textContent, currentDisplay.textContent);
+
         mainDisplay.textContent = "";
 
         isOperatorEnabled = true;
+
+        console.log(history);
     } else if (currentDisplay.textContent.length !== 0) {
 
         updateMainDisplay(currentDisplay.textContent, operator);
@@ -164,6 +181,8 @@ function arithmetic([a, b], operator) {
 
         answer = a / b;
     }
+
+    console.log(answer);
 
     return answer;
 }
@@ -260,4 +279,12 @@ function getDigitsFromEqn(expression, operator) {
         .map((num) => {
             return parseFloat(num)
         });
+}
+
+function updateHistory(equation, answer) {
+
+    history.unshift({
+        eqn : equation,
+        sol : answer
+    });
 }
