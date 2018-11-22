@@ -3,6 +3,7 @@
     margin: 0;
     box-sizing: border-box;
     font-family: 'Montserrat';
+    letter-spacing: 1.1px;
 }
 
 html,
@@ -45,7 +46,7 @@ body {
 
 #main,
 #current {
-    color: #bd9b6f;
+    color: #c77f22;
     text-align: right;
     padding: 10px 12px 8px 0;
     height: 40px;
@@ -54,9 +55,7 @@ body {
 }
 
 #current {
-    color: #dbb27e;
     font-size: 20px;
-    letter-spacing: 1.1px;
 }
 
 /* ===========================BUTTONS======================== */
@@ -103,9 +102,13 @@ body {
     width: 400px;
     height: 445px;
     color: white;
-    overflow: scroll;
-    overflow-x: hidden;
-    padding: 20px 40px;
+    padding: 0 40px;
+}
+
+#history #heading {
+    height: 40px;
+    width: 400px;
+    background: #6D4DA0;
 }
 
 #history h4 {
@@ -113,7 +116,30 @@ body {
     font-weight: bold;
     font-size: 20px;
     margin-bottom: 12px;
-    position: fixed;
+}
+
+#history-section {
+    padding-top: 12px;
+    width: 360px;
+    height: 360px;
+    overflow: auto;
+}
+
+#clear-history {
+    display: block;
+    text-align: center;
+    width: 90px;
+    height: 30px;
+    color: white;
+    background: #6D4DA0;
+    border: white 2px solid;
+    margin-top: 16px;
+    text-transform: uppercase;
+}
+
+#clear-history:hover {
+    background: white;
+    color: #6D4DA0;
 }
 
 /* ===========================SCROLLBAR======================== */
