@@ -12,6 +12,7 @@ function attachHandlerToButtons() {
     window.addEventListener("keydown", handleNumPadEvent);
 
     document.getElementById("negate").addEventListener("click", handleNegation);
+    document.getElementById("clear-history").addEventListener("click", clearHistory);
     [...document.getElementsByClassName("num-button")].forEach(btn => btn.addEventListener("click", handleNumberEvent));
     [...document.getElementsByClassName("op-button")].forEach(btn => btn.addEventListener("click", handleOperatorEvent));
     [...document.getElementsByClassName("edit-button")].forEach(btn => btn.addEventListener("click", handleEditEvent));
@@ -293,7 +294,14 @@ function updateHistory(equation, answer) {
 
 function updateHistoryDiv() {
 
-    let historySection = document.getElementById("histroy-section");
+    let historySection = document.getElementById("history-section");
 
-    historySection.innerHTML += "<br>" + previousCalculations[0].eqn + "<br>" + previousCalculations[0].sol;
+    historySection.innerHTML += previousCalculations[0].eqn + "<br>" + previousCalculations[0].sol + "<br>";
+}
+
+function clearHistory() {
+    
+    previousCalculations = [];
+    
+    document.getElementById("history-section").innerHTML = "";
 }
