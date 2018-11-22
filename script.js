@@ -82,6 +82,8 @@ function operationalUpdate(operator) {
 
         updateHistory(mainDisplay.textContent, currentDisplay.textContent);
 
+        updateHistoryDiv();
+
         mainDisplay.textContent = "";
 
         isOperatorEnabled = true;
@@ -287,4 +289,11 @@ function updateHistory(equation, answer) {
         eqn : equation,
         sol : answer
     });
+}
+
+function updateHistoryDiv() {
+
+    let historySection = document.getElementById("histroy-section");
+
+    historySection.innerHTML += "<br>" + previousCalculations[0].eqn + "<br>" + previousCalculations[0].sol;
 }
