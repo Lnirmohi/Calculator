@@ -3,7 +3,8 @@ const currentDisplay = document.getElementById("current"),
 
 //to disable operator keys if pressed once
 var isOperatorEnabled = false,
-    previousCalculations = [];
+    previousCalculations = [],
+    showHistory = false;
 
 attachHandlerToButtons();
 
@@ -13,24 +14,26 @@ function attachHandlerToButtons() {
 
     document.getElementById("negate").addEventListener("click", handleNegation);
     document.getElementById("clear-history").addEventListener("click", clearHistory);
+    document.getElementById("toggle-history").addEventListener("click", toggleHistorySection);
+
     [...document.getElementsByClassName("num-button")].forEach(btn => btn.addEventListener("click", handleNumberEvent));
     [...document.getElementsByClassName("op-button")].forEach(btn => btn.addEventListener("click", handleOperatorEvent));
     [...document.getElementsByClassName("edit-button")].forEach(btn => btn.addEventListener("click", handleEditEvent));
-    
+
 }
 
 function handleNegation() {
 
     let currentEqnLength = currentDisplay.textContent.length;
 
-    if(currentEqnLength > 0) {
+    if (currentEqnLength > 0) {
 
         if (!currentDisplay.textContent.startsWith("-")) {
 
-            currentDisplay.textContent = "-".concat(currentDisplay.textContent);
-        }else if(currentDisplay.textContent.startsWith("-")) {
-    
-            currentDisplay.textContent = currentDisplay.textContent.slice(1, currentEqnLength);
+            updateCurrentDisplay("-".concat(currentDisplay.textContent));
+        } else if (currentDisplay.textContent.startsWith("-")) {
+
+            updateCurrentDisplay(currentDisplay.textContent.slice(1, currentEqnLength));
         }
     }
 }
@@ -64,7 +67,7 @@ function numericUpdate(value) {
 
 //this function handles operator events like +, -, *, /, =
 function handleOperatorEvent(operatorEvent) {
-    
+
     operationalUpdate(operatorEvent.srcElement.textContent);
 }
 
@@ -88,8 +91,6 @@ function operationalUpdate(operator) {
         mainDisplay.textContent = "";
 
         isOperatorEnabled = true;
-
-        console.log(previousCalculations);
     } else if (currentDisplay.textContent.length !== 0) {
 
         updateMainDisplay(currentDisplay.textContent, operator);
@@ -104,9 +105,7 @@ function handleEditEvent(editEvent) {
 
         resetBothDisplay();
     } else if (editEvent.srcElement.id == "delete") {
-
-        //to clear the screen if a division by zero has taken place and current display
-        //shows "Cannot divide by zero".
+        
         deletionUpdate();
     }
 }
@@ -184,8 +183,6 @@ function arithmetic([a, b], operator) {
 
         answer = a / b;
     }
-
-    console.log(answer);
 
     return answer;
 }
@@ -287,21 +284,45 @@ function getDigitsFromEqn(expression, operator) {
 function updateHistory(equation, answer) {
 
     previousCalculations.unshift({
-        eqn : equation,
-        sol : answer
+        eqn: equation,
+        sol: answer
     });
 }
 
 function updateHistoryDiv() {
 
-    let historySection = document.getElementById("history-section");
-
-    historySection.innerHTML += previousCalculations[0].eqn + "<br>" + previousCalculations[0].sol + "<br>";
+    document.getElementById("history-section").innerHTML +=
+        previousCalculations[0].eqn + " = " + previousCalculations[0].sol + "<hr>";
 }
 
 function clearHistory() {
-    
+
     previousCalculations = [];
-    
+
     document.getElementById("history-section").innerHTML = "";
+}
+
+function toggleHistorySection() {
+
+    let historyDiv = document.getElementById("history");
+
+    historyDiv.style.transitionDuration = "1s";
+
+    if (showHistory == false) {
+
+        setTransitionsOnHistoryDiv(300, "0px 6px 50px 0px #00000033", true);
+    } else if (showHistory == true) {
+
+        setTransitionsOnHistoryDiv(0, "none", false);
+    }
+
+    function setTransitionsOnHistoryDiv(value, shadow, flag) {
+
+        historyDiv.style.transform = "translate(" + value + "px)";
+
+        historyDiv.style.boxShadow = shadow;
+
+        showHistory = flag;
+    }
+
 }
