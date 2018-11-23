@@ -6,32 +6,51 @@
     letter-spacing: 1.1px;
 }
 
+hr {
+    margin-top: 4px;
+    opacity: 0.1;
+}
+
 html,
 body {
     height: 100%;
     width: 100%;
-    padding: 20px 30px;
+    padding: 10px;
+}
+
+#project-name {
+    background: whitesmoke;
+    padding: 60px 0 0 60px;
+    position: relative;
+    z-index: 2;
+    text-transform: uppercase;
+    font-size: 40px;
 }
 
 .container {
     margin: 0 auto;
-    background: #6D4DA0;
+    background: whitesmoke;
     width: 100%;
-    height: 100%;
-    box-shadow: 0 10px 6px -6px #777;
+    height: 86%;
+    box-shadow: 0px 6px 50px 0px #00000033;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .calc {
-    box-shadow: 0px 6px 52px 9px rgba(0, 0, 0, 0.2);
-    border: 0 solid white;
-    margin-right: 22px;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0px 6px 50px 0px #00000033;
     height: 445px;
     width: 300px;
     display: flex;
     flex-direction: column;
+    background: whitesmoke;
+}
+
+.btn-wrapper {
+    background: whitesmoke;
 }
 
 /* ============================DISPLAY========================= */
@@ -51,14 +70,40 @@ body {
     padding: 10px 12px 8px 0;
     height: 40px;
     width: 100%;
+    overflow: auto;
     font-size: 16px;
 }
 
 #current {
-    font-size: 20px;
+    font-size: 18px;
+}
+
+#main {
+    font-size: 16px;
 }
 
 /* ===========================BUTTONS======================== */
+
+#toggle-history {
+    border: none;
+    background: whitesmoke;
+    color: #613ba0;
+    width: 100px;
+    height: 30px;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+#toggle-history:hover {
+    background: #ececec;
+    color: black;
+}
+
+#toggle-history:active {
+    background: #ececec;
+    color: black;
+    transform: scale(0.95);
+}
 
 .keypad {
     width: 100%;
@@ -82,65 +127,74 @@ body {
     grid-column-end: 6;
     grid-row-start: 3;
     grid-row-end: 5;
-    background: #dee4f0;
+    background: #bec6d6;
 }
 
 .btn:hover,
 #equals:hover {
     color: white;
-    background: rgba(88, 88, 88, 0.6)
+    background: #58585899;
 }
 
 .btn:active,
 #equals:-ms-keyboard-active {
-    background: rgb(41, 41, 41);
+    background: #292929;
 }
 
 /* ===========================HISTORY======================== */
 
 #history {
-    width: 400px;
+    position: absolute;
+    top: 0;
+    z-index: -2;
+    width: 300px;
     height: 445px;
+    background: #F8F8F8;
     color: white;
-    padding: 0 40px;
+    padding: 0 20px;
 }
 
 #history #heading {
     height: 40px;
-    width: 400px;
-    background: #6D4DA0;
+    width: 100%;
+    color: #6D4DA0;;
 }
 
 #history h4 {
     text-transform: uppercase;
     font-weight: bold;
     font-size: 20px;
-    margin-bottom: 12px;
+    padding-top: 12px;
 }
 
 #history-section {
     padding-top: 12px;
-    width: 360px;
-    height: 360px;
+    width: 100%;
+    height: 345px;
     overflow: auto;
+    font-size: 16px;
+    color: #b0afaf;
 }
 
 #clear-history {
+    align-self: right;
     display: block;
     text-align: center;
     width: 90px;
     height: 30px;
     color: white;
     background: #6D4DA0;
-    border: white 2px solid;
+    border: none;
     margin-top: 16px;
     text-transform: uppercase;
+    font-weight: bold;
 }
 
-#clear-history:hover {
-    background: white;
-    color: #6D4DA0;
+#clear-history:active {
+    background: #613ba0;
+    transform: scale(0.95);
 }
+
 
 /* ===========================SCROLLBAR======================== */
 
@@ -151,15 +205,15 @@ body {
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.5); 
+    background: #ffffff80; 
 }
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.8);
+    background: #ffffffcc;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255); 
+    background: #ffffff; 
 }
