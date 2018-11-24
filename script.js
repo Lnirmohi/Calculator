@@ -30,10 +30,10 @@ function handleNegation() {
 
         if (!currentDisplay.textContent.startsWith("-")) {
 
-            updateCurrentDisplay("-".concat(currentDisplay.textContent));
+            currentDisplay.textContent = "-".concat(currentDisplay.textContent);
         } else if (currentDisplay.textContent.startsWith("-")) {
 
-            updateCurrentDisplay(currentDisplay.textContent.slice(1, currentEqnLength));
+            currentDisplay.textContent = currentDisplay.textContent.slice(1, currentEqnLength);
         }
     }
 }
