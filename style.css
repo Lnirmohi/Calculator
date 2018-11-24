@@ -20,11 +20,17 @@ body {
 
 #project-name {
     background: whitesmoke;
-    padding: 60px 0 0 60px;
+    padding: 50px 0 0 55px;
     position: relative;
-    z-index: 2;
-    text-transform: uppercase;
+    z-index: 2;   
+}
+
+#project-name p {
     font-size: 40px;
+    text-transform: uppercase;
+    color: #6D4DA0;
+    display: inline;
+    padding: 10px;
 }
 
 .container {
@@ -133,7 +139,7 @@ body {
 .btn:hover,
 #equals:hover {
     color: white;
-    background: #58585899;
+    background: #585858;
 }
 
 .btn:active,
