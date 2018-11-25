@@ -149,7 +149,7 @@ function updateCurrentDisplay(currentValue) {
 
 function updateMainDisplay(currentValue, operator) {
 
-    if (isOperatorEnabled == false || (mainDisplay.textContent == "" && operator !== "=")) {
+    if (isOperatorEnabled == false || (mainDisplay.textContent == "" && operator !== "=" && operator !== "Enter")) {
 
         //if decimal is pressed and no number is followed by it then decimal is sliced out
         if (currentValue.endsWith(".")) {
