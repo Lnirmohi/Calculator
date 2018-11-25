@@ -291,8 +291,14 @@ function updateHistory(equation, answer) {
 
 function updateHistoryDiv() {
 
-    document.getElementById("history-section").innerHTML +=
-        previousCalculations[0].eqn + " = " + previousCalculations[0].sol + "<hr>";
+    let historyPara = document.createElement("p"),
+        hr = document.createElement("hr");
+
+    historyPara.textContent = previousCalculations[0].eqn + " = " + previousCalculations[0].sol;
+
+    historyPara.appendChild(hr);
+
+    document.getElementById("history-section").appendChild(historyPara);
 }
 
 function clearHistory() {
